@@ -1,12 +1,16 @@
 __author__ = 'manz'
 
 from core.ParapheurController import ParapheurController
+from core.Requester import Requester
 
-parapheurController = ParapheurController("http://dev-parapheur.local/alfresco/s")
 
-parapheurController.logging = True
+# Scenario "Documentation"
+requester = Requester("http://dev-parapheur.local/alfresco/s")
 
-parapheurController.login("eperalta", "secret")
+requester.logging = True
+requester.login("eperalta", "secret")
+
+parapheurController = ParapheurController(requester)
 
 bureaux = parapheurController.getBureaux("eperalta")
 

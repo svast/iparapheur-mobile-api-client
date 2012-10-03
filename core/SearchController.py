@@ -1,8 +1,8 @@
 __author__ = 'manz'
 
 class SearchController(object):
-    def __init__(self, ticket):
-        self.ticket = ticket
+    def __init__(self, requester):
+        self.requester = requester
 
     def searchWithFilter(self):
         return None
