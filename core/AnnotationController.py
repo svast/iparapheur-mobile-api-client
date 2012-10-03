@@ -1,16 +1,21 @@
 
 class Point(object):
+    """ defines a simple Point Class """
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
 
 class Rect(object):
+    """ defines a simple Rect class """
     def __init__(self, topLeft, bottomRight):
         self.topLeft = topLeft
         self.bottomRight = bottomRight
 
 class Annotation(object):
+    """ defines the annotation class
+    """
+
     def __init__(self):
         self.uuid = None
         self.type = "text"
@@ -19,6 +24,8 @@ class Annotation(object):
         self.rect = None
 
 class AnnotationController(object):
+    """ handles annotations related requests
+    """
     def __init__(self, requester):
         self.requester = requester
 

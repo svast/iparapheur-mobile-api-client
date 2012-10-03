@@ -18,7 +18,7 @@ class ParapheurController(object):
 
         req = {"bureauRef": bureauRef}
 
-        return self.requester.apiAuthRequest('/parapheur/api/getTypologie', req)
+        return self.requester.apiAuthRequest('/parapheur/api/getTypologie', req)["data"]["typology"]
 
     def getDossier(self, dossierRef):
         assert dossierRef

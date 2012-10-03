@@ -7,6 +7,13 @@ import os, re
 pp = pprint.PrettyPrinter(indent=2)
 
 
+class RequestException(Exception):
+    def _get_message(self):
+        return self._message
+    def _set_message(self, message):
+        self._message = message
+    message = property(_get_message, _set_message)
+
 class Requester(object):
     def __init__(self, endPoint):
         super(Requester, self).__init__()
@@ -27,8 +34,10 @@ class Requester(object):
         try:
             r = urllib2.urlopen(req)
         except HTTPError as err:
-            print uri + apipath
-            print err
+            errorBody = err.read()
+            jerr = json.loads(errorBody)
+            raise RequestException(jerr["message"])
+
         else:
             response = r.read()
             jsonData = json.loads(response)
