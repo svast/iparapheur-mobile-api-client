@@ -4,8 +4,6 @@ import pprint
 import json
 import os, re
 
-__author__ = 'manz'
-
 pp = pprint.PrettyPrinter(indent=2)
 
 

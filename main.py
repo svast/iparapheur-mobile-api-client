@@ -1,5 +1,3 @@
-__author__ = 'manz'
-
 from core.ParapheurController import ParapheurController
 from core.Requester import Requester
 
