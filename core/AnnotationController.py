@@ -1,8 +1,9 @@
 
 class Point(object):
     def __init__(self, x, y):
-        self.x = x;
-        self.y = y;
+        self.x = x
+        self.y = y
+
 
 class Rect(object):
     def __init__(self, topLeft, bottomRight):
@@ -31,10 +32,10 @@ class AnnotationController(object):
                  "rect": {"topLeft":{"x":topLeft.x, "y":topLeft.y},
                           "bottomRight":{"x":bottomRight.x, "y":bottomRight.y}}}]}
 
-        return self.requester.apiAuthRequest("/api/parapheur/addAnnotation", req)
+        return self.requester.apiAuthRequest("/parapheur/api/addAnnotation", req)
 
 
-    def updateAnnotation(self, dossier):
+    def updateAnnotation(self, dossier, annotation):
         bottomRight = annotation.rect.bottomRight
         topLeft = annotation.rect.topLeft
 
@@ -45,7 +46,7 @@ class AnnotationController(object):
                                    "rect": {"topLeft":{"x":topLeft.x, "y":topLeft.y},
                                             "bottomRight":{"x":bottomRight.x, "y":bottomRight.y}}}]}
 
-        return self.requester.apiAuthRequest("/api/parapheur/updateAnnotation", req)
+        return self.requester.apiAuthRequest("/parapheur/api/updateAnnotation", req)
 
     def removeAnnotation(self, dossier, uuid, page):
 
@@ -53,13 +54,13 @@ class AnnotationController(object):
                "uuid": uuid,
                "page": page}
 
-        return self.requester.apiAuthRequest("/api/parapheur/removeAnnotation", req)
+        return self.requester.apiAuthRequest("/parapheur/api/removeAnnotation", req)
 
     #FIXME: return List Annotation Object
     def getAnnotations(self, dossier):
 
         req = {"dossierRef": dossier}
 
-        return self.requester.apiAuthRequest("/api/parapheur/getAnnotations", req)
+        return self.requester.apiAuthRequest("/parapheur/api/getAnnotations", req)
 
 

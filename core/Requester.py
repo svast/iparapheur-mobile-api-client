@@ -15,7 +15,7 @@ class Requester(object):
 
 
     def _apiRequest(self, uri, apipath, args):
-        content = json.dumps(args);
+        content = json.dumps(args)
 
         req = urllib2.Request(uri + apipath,
             headers={
@@ -38,24 +38,25 @@ class Requester(object):
 
 
     def apiRequest(self, uri, apipath, args, suffix=""):
-        if (self.logging):
+        fname = ""
+        if self.logging:
             fname = os.path.split(apipath)[1]
             m = re.match("^([A-Za-z]+)", fname)
-            if (m):
+            if m:
                 fname = m.group(0) + suffix
 
-            fd = os.open("/tmp/" + fname + "_in.js", os.O_WRONLY | os.O_CREAT);
+            fd = os.open("/tmp/" + fname + "_in.js", os.O_WRONLY | os.O_CREAT)
 
-            os.write(fd, json.dumps(args, indent=4));
+            os.write(fd, json.dumps(args, indent=4))
             os.fsync(fd)
             os.close(fd)
 
         retval = self._apiRequest(uri, apipath, args)
 
-        if (self.logging):
-            fd = os.open("/tmp/" + fname + "_out.js", os.O_WRONLY | os.O_CREAT);
+        if self.logging:
+            fd = os.open("/tmp/" + fname + "_out.js", os.O_WRONLY | os.O_CREAT)
 
-            os.write(fd, json.dumps(retval, indent=4));
+            os.write(fd, json.dumps(retval, indent=4))
             os.fsync(fd)
             os.close(fd)
 
@@ -63,22 +64,22 @@ class Requester(object):
 
 
     def apiAuthRequest(self, apipath, args, suffix=""):
-        assert(self.ticket)
+        assert self.ticket
         return self.apiRequest(self.endPoint, apipath + "?alf_ticket=" + self.ticket, args, suffix)
 
 
     def login(self, username, password):
         ret = self.apiRequest(self.endPoint, '/parapheur/api/login', {'username': username, 'password': password})
 
-        if (ret):
+        if ret:
             self.ticket = ret["data"]["ticket"]
 
         return self.ticket
 
 
     def logout(self, ticket):
-        req = {"ticket": ticket};
+        req = {"ticket": ticket}
 
-        return self.apiAuthRequest(self.endPoint, '/parapheur/api/logout', req, self.ticket)
+        return self.apiAuthRequest(self.endPoint, '/parapheur/api/logout', req)
 
 

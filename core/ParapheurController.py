@@ -1,12 +1,3 @@
-import urllib2
-from urllib2 import HTTPError
-
-import json
-import pprint
-import os, re
-import threading
-
-
 
 class ParapheurController(object):
     """Defines the controller that uses the basic functions exposed by the API"""
@@ -16,29 +7,29 @@ class ParapheurController(object):
         self.requester = requester
 
     def getBureaux(self, username):
-        assert(username);
+        assert username;
 
-        req = {"username": username};
+        req = {"username": username}
 
         return self.requester.apiAuthRequest('/parapheur/api/getBureaux', req)
 
     def getTypologie(self, bureauRef):
-        assert(bureauRef)
+        assert bureauRef
 
         req = {"bureauRef": bureauRef}
 
         return self.requester.apiAuthRequest('/parapheur/api/getTypologie', req)
 
     def getDossier(self, dossierRef):
-        assert(dossierRef)
+        assert dossierRef
 
         req = {"dossierRef": dossierRef}
 
         return self.requester.apiAuthRequest('/parapheur/api/getDossier', req)
 
     # gets the circuit instance for dossier
-    def getCircuit(self, dossieRef):
-        assert(dossierRef)
+    def getCircuit(self, dossierRef):
+        assert dossierRef
 
         req = {"dossierRef": dossierRef}
 
