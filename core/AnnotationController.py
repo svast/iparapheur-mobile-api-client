@@ -36,6 +36,7 @@ class AnnotationController(object):
         req =  { "dossier": dossier,
                  "annotations": [{ "page": annotation.page,
                  "text": annotation.text,
+                 "type" : annotation.type,
                  "rect": {"topLeft":{"x":topLeft.x, "y":topLeft.y},
                           "bottomRight":{"x":bottomRight.x, "y":bottomRight.y}}}]}
 

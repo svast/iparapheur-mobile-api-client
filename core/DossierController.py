@@ -41,7 +41,7 @@ class DossierController(object):
                "content": b64Content,
                "mainFile": "false"}
 
-        return self.requester.apiAuthRequest("/parapheur/api/addDocument", req)
+        return self.requester.apiAuthRequest("/parapheur/api/addDocument", req, '_annexe')
 
     def setCircuit(self, dossier, _type, sousType):
         req = {"dossierRef": dossier,
@@ -54,3 +54,8 @@ class DossierController(object):
         req = {"nodeRef": dossier}
 
         return self.requester.apiAuthRequest("/parapheur/api/finalizeCreateDossier", req)
+
+    def deleteNode(self, dossier):
+        req = {"nodeRef": dossier}
+
+        return self.requester.apiAuthRequest("/parapheur/api/deleteNode", req)

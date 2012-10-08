@@ -45,6 +45,45 @@ class Requester(object):
             pp.pprint(jsonData)
             return  jsonData
 
+    def wrapLinesSmart(self, lineslist, size=100, delimiters='.,:\t '):
+        "wrap at first delimiter left of size"
+
+        wraplines = []
+        for line in lineslist:
+            while True:
+                if len(line) <= size:
+                    wraplines += [line]
+                    break
+                else:
+
+#                    indent_match = re.match("( +)", line)
+#                    indent = ""
+#                    if (indent_match):
+#                        indent = indent_match.group(0)
+
+                    for look in range(size - 1, size / 2, -1):
+                        if line[look] in delimiters:
+                            front, line = line[:look + 1], line[look + 1:]
+                            break
+                    else:
+                        front, line = line[:size], line[size:]
+                    wraplines += [front]
+        return wraplines
+
+    def writeToFile(self, fname, content, suffix):
+
+        raw_lines = content.split("\n")
+
+        lines = self.wrapLinesSmart(raw_lines)
+
+        fd = os.open("snippets/" + fname + suffix, os.O_WRONLY | os.O_CREAT)
+
+        for line in lines:
+            os.write(fd, line)
+            os.write(fd, "\n")
+
+        os.fsync(fd)
+        os.close(fd)
 
     def apiRequest(self, uri, apipath, args, suffix=""):
         fname = ""
@@ -54,20 +93,15 @@ class Requester(object):
             if m:
                 fname = m.group(0) + suffix
 
-            fd = os.open("/tmp/" + fname + "_in.js", os.O_WRONLY | os.O_CREAT)
+            self.writeToFile(fname, json.dumps(args, indent=4), suffix+"_in.js")
 
-            os.write(fd, json.dumps(args, indent=4))
-            os.fsync(fd)
-            os.close(fd)
 
         retval = self._apiRequest(uri, apipath, args)
 
         if self.logging:
-            fd = os.open("/tmp/" + fname + "_out.js", os.O_WRONLY | os.O_CREAT)
 
-            os.write(fd, json.dumps(retval, indent=4))
-            os.fsync(fd)
-            os.close(fd)
+            self.writeToFile(fname, json.dumps(retval, indent=4), suffix+"_out.js")
+
 
         return retval
 
