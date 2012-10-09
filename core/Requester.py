@@ -76,14 +76,10 @@ class Requester(object):
 
         lines = self.wrapLinesSmart(raw_lines)
 
-        fd = os.open("snippets/" + fname + suffix, os.O_WRONLY | os.O_CREAT)
-
+        file = open("snippets/" + fname + suffix, "w")
         for line in lines:
-            os.write(fd, line)
-            os.write(fd, "\n")
+            file.write(line+'\n')
 
-        os.fsync(fd)
-        os.close(fd)
 
     def apiRequest(self, uri, apipath, args, suffix=""):
         fname = ""

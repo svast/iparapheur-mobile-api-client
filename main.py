@@ -46,7 +46,9 @@ annotation.type = "text"
 annotationController.addAnnotation(dossier, annotation)
 annotationController.getAnnotations(dossier)
 
-#dossierController.deleteNode(dossier)
+data = dossierController.getDossier(dossier)
+
+dossierController.deleteNode(dossier)
 
 #annotationController.updateAnnotation(dossier, annotation)
 

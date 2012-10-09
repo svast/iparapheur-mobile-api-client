@@ -56,6 +56,12 @@ class DossierController(object):
         return self.requester.apiAuthRequest("/parapheur/api/finalizeCreateDossier", req)
 
     def deleteNode(self, dossier):
-        req = {"nodeRef": dossier}
+        req = {"nodeRef": [dossier]}
 
         return self.requester.apiAuthRequest("/parapheur/api/deleteNode", req)
+
+    def getDossier(self, dossier):
+
+        req = {"dossierRef": dossier}
+
+        return self.requester.apiAuthRequest("/parapheur/api/getDossier", req)
