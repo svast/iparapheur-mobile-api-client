@@ -5,7 +5,7 @@ from core.Requester import Requester
 
 
 # Scenario "Documentation"
-requester = Requester("http://dev-parapheur.local/alfresco/s")
+requester = Requester("http://parapheur-dev.local:8080/alfresco/s")
 requester.logging = True
 requester.login("eperalta", "secret")
 
@@ -23,17 +23,20 @@ bureauCourant = bureaux['data']['bureaux'][0]['nodeRef']
 typologie = parapheurController.getTypologie(bureauCourant)
 
 dossier = dossierController.beginCreateDossier(bureauCourant)
-dossierController.setCircuit(dossier, typologie.keys()[0], typologie[typologie.keys()[0]][0])
 
-docPrincipal = dossierController.addDocumentPrincipal(dossier, "fixtures/minimal.pdf")
-#annexe = dossierController.addAnnexe(dossier, "fixtures/annexe.pdf")
+dossierController.setCircuit(dossier, bureauCourant, typologie.keys()[0], typologie[typologie.keys()[0]][0])
+
+docDelete = dossierController.addDocument(dossier, "fixtures/minimal.pdf", bureauCourant)
+docPrincipal = dossierController.addDocumentVisu(dossier, "fixtures/min.xml", "fixtures/minimal.pdf", bureauCourant)
+
+dossierController.removeDocument(docDelete, bureauCourant)
 
 properties = {
     "cm:name": "Test EPA Mobile API"
 }
 
-dossierController.setDossierProperties(dossier, properties)
-#dossierController.finalizeCreateDossier(dossier)
+dossierController.setDossierProperties(dossier, bureauCourant, properties)
+dossierController.finalizeCreateDossier(dossier, bureauCourant)
 
 
 annotation = Annotation()
@@ -46,9 +49,9 @@ annotation.type = "text"
 annotationController.addAnnotation(dossier, annotation)
 annotationController.getAnnotations(dossier)
 
-data = dossierController.getDossier(dossier)
+data = dossierController.getDossier(dossier, bureauCourant)
 
-dossierController.deleteNode(dossier)
+dossierController.deleteNodes(dossier)
 
 #annotationController.updateAnnotation(dossier, annotation)
 

@@ -58,7 +58,7 @@ class AnnotationController(object):
 
     def removeAnnotation(self, dossier, uuid, page):
 
-        req = {"dossierRef": dossier,
+        req = {"dossier": dossier,
                "uuid": uuid,
                "page": page}
 
@@ -67,7 +67,7 @@ class AnnotationController(object):
     #FIXME: return List Annotation Object
     def getAnnotations(self, dossier):
 
-        req = {"dossierRef": dossier}
+        req = {"dossier": dossier}
 
         return self.requester.apiAuthRequest("/parapheur/api/getAnnotations", req)
 

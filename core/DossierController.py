@@ -6,62 +6,80 @@ class DossierController(object):
         self.requester = requester
 
     def beginCreateDossier(self, bureau):
-        req = {"bureauRef": bureau}
+        req = {"bureauCourant": bureau}
         return self.requester.apiAuthRequest("/parapheur/api/createDossier", req)["dossierRef"]
 
-    def setDossierProperties(self, dossier, properties):
-        req = {"dossierRef": dossier,
+    def setDossierProperties(self, dossier, bureau, properties):
+        req = {"dossier": dossier,
+               "bureauCourant": bureau,
                "properties": properties}
 
         return self.requester.apiAuthRequest("/parapheur/api/setDossierProperties", req)
 
-    def addDocumentPrincipal(self, dossier, fileName):
+    def addDocumentVisu(self, dossier, fileName, visuName, bureau):
+        f = open(fileName)
+        ff = open(visuName)
+        content = f.read()
+        ccontent = ff.read()
+        b64Content = base64.standard_b64encode(content);
+        bb64Content = base64.standard_b64encode(ccontent);
+
+        head, tail = os.path.split(fileName)
+        head, taill = os.path.split(visuName)
+
+        req = {"dossier": dossier,
+               "bureauCourant" : bureau,
+               "name": tail,
+               "content": b64Content,
+               "visualname": taill,
+               "visualcontent": bb64Content}
+
+        return self.requester.apiAuthRequest("/parapheur/api/addDocument", req, "_visuel") ["success"]
+        
+    def addDocument(self, dossier, fileName, bureau):
         f = open(fileName)
         content = f.read()
         b64Content = base64.standard_b64encode(content);
 
         head, tail = os.path.split(fileName)
 
-        req = {"dossierRef": dossier,
+        req = {"dossier": dossier,
+               "bureauCourant" : bureau,
                "name": tail,
                "content": b64Content,
-               "mainFile": "true"}
+               "visualname": "",
+               "visualcontent": ""}
 
-        return self.requester.apiAuthRequest("/parapheur/api/addDocument", req)
+        return self.requester.apiAuthRequest("/parapheur/api/addDocument", req) ["success"]
 
-    def addAnnexe(self, dossier, fileName):
-        f = open(fileName)
-        content = f.read()
-        b64Content = base64.standard_b64encode(content);
+    def removeDocument(self, document, bureau):
+        req = {"document":document,
+               "bureauCourant": bureau}
+               
+        return self.requester.apiAuthRequest("/parapheur/api/removeDocument", req)
 
-        head, tail = os.path.split(fileName)
-
-        req = {"dossierRef": dossier,
-               "name": tail,
-               "content": b64Content,
-               "mainFile": "false"}
-
-        return self.requester.apiAuthRequest("/parapheur/api/addDocument", req, '_annexe')
-
-    def setCircuit(self, dossier, _type, sousType):
-        req = {"dossierRef": dossier,
+    def setCircuit(self, dossier, bureau, _type, sousType):
+        req = {"dossier": dossier,
+			   "bureauCourant": bureau,
                "type": _type,
                "sousType": sousType}
 
         return self.requester.apiAuthRequest("/parapheur/api/setCircuit", req)
 
-    def finalizeCreateDossier(self, dossier):
-        req = {"nodeRef": dossier}
+    def finalizeCreateDossier(self, dossier, bureau):
+        req = {"dossier": dossier,
+               "bureauCourant": bureau}
 
         return self.requester.apiAuthRequest("/parapheur/api/finalizeCreateDossier", req)
 
-    def deleteNode(self, dossier):
-        req = {"nodeRef": [dossier]}
+    def deleteNodes(self, dossier):
+        req = {"nodes": [dossier]}
 
-        return self.requester.apiAuthRequest("/parapheur/api/deleteNode", req)
+        return self.requester.apiAuthRequest("/parapheur/api/deleteNodes", req)
 
-    def getDossier(self, dossier):
+    def getDossier(self, dossier, bureau):
 
-        req = {"dossierRef": dossier}
+        req = {"dossier": dossier,
+               "bureauCourant": bureau}
 
         return self.requester.apiAuthRequest("/parapheur/api/getDossier", req)

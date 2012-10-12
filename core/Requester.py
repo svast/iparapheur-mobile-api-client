@@ -89,14 +89,14 @@ class Requester(object):
             if m:
                 fname = m.group(0) + suffix
 
-            self.writeToFile(fname, json.dumps(args, indent=4), suffix+"_in.js")
+            self.writeToFile(fname, json.dumps(args, indent=4), "_in.js")
 
 
         retval = self._apiRequest(uri, apipath, args)
 
         if self.logging:
 
-            self.writeToFile(fname, json.dumps(retval, indent=4), suffix+"_out.js")
+            self.writeToFile(fname, json.dumps(retval, indent=4), "_out.js")
 
 
         return retval
