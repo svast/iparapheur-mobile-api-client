@@ -49,7 +49,6 @@ class AnnotationController(object):
 
         req =  { "dossier": dossier,
                  "annotations": [{ "uuid":annotation.uuid,
-                                   "page": annotation.page,
                                    "text": annotation.text,
                                    "rect": {"topLeft":{"x":topLeft.x, "y":topLeft.y},
                                             "bottomRight":{"x":bottomRight.x, "y":bottomRight.y}}}]}

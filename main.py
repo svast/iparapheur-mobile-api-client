@@ -18,13 +18,14 @@ parapheurController = ParapheurController(requester)
 
 bureaux = parapheurController.getBureaux("eperalta")
 
-bureauCourant = bureaux['data']['bureaux'][0]['nodeRef']
+bureauCourant = bureaux['bureaux'][0]['nodeRef']
+bureauDGS = bureaux['bureaux'][4]['nodeRef']
 
 typologie = parapheurController.getTypologie(bureauCourant)
 
 dossier = dossierController.beginCreateDossier(bureauCourant)
 
-dossierController.setCircuit(dossier, bureauCourant, typologie.keys()[0], typologie[typologie.keys()[0]][0])
+dossierController.setCircuit(dossier, bureauCourant, typologie.keys()[1], typologie[typologie.keys()[1]][0])
 
 docDelete = dossierController.addDocument(dossier, "fixtures/minimal.pdf", bureauCourant)
 docPrincipal = dossierController.addDocumentVisu(dossier, "fixtures/min.xml", "fixtures/minimal.pdf", bureauCourant)
@@ -34,6 +35,8 @@ dossierController.removeDocument(docDelete, bureauCourant)
 properties = {
     "cm:name": "Test EPA Mobile API"
 }
+
+parapheurController.getCircuit(bureauCourant, typologie.keys()[1], typologie[typologie.keys()[1]][0])
 
 dossierController.setDossierProperties(dossier, bureauCourant, properties)
 dossierController.finalizeCreateDossier(dossier, bureauCourant)
@@ -46,12 +49,29 @@ annotation.rect = Rect(Point(0,0), Point(100, 100))
 annotation.text = "coucou"
 annotation.type = "text"
 
-annotationController.addAnnotation(dossier, annotation)
+annotation.uuid = annotationController.addAnnotation(dossier, annotation)['uuids'][0]
 annotationController.getAnnotations(dossier)
+
+annotation.text = "test"
+
 
 data = dossierController.getDossier(dossier, bureauCourant)
 
-dossierController.deleteNodes(dossier)
+parapheurController.getDossiersHeaders(bureauCourant)
 
-#annotationController.updateAnnotation(dossier, annotation)
+dossierController.getImages(dossier)
+
+parapheurController.getMetadonnees(typologie.keys()[2], typologie[typologie.keys()[2]][0])
+
+dossierController.visa(dossier, "Annotation publique", "Annotation publique", bureauCourant)
+
+dossierController.remorse(dossier, bureauCourant)
+
+dossierController.visa(dossier, "Annotation publique", "Annotation publique", bureauCourant)
+
+dossierController.reject(dossier, "Annotation publique", "Annotation publique", bureauDGS)
+
+dossierController.raz(dossier, bureauCourant)
+
+dossierController.deleteNodes(dossier)
 

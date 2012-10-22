@@ -83,3 +83,36 @@ class DossierController(object):
                "bureauCourant": bureau}
 
         return self.requester.apiAuthRequest("/parapheur/api/getDossier", req)
+        
+    def getImages(self, dossier):
+        req = {"dossier":dossier}
+        
+        return self.requester.apiAuthRequest("/parapheur/api/getImages", req)
+        
+    def raz(self, dossiers, bureauCourant):
+        req = {"dossiers":[dossiers],
+               "bureauCourant":bureauCourant}
+        
+        return self.requester.apiAuthRequest("/parapheur/api/razDossier", req)
+        
+    def reject(self, dossiers, annotPub, annotPriv, bureauCourant):
+        req = {"dossiers":[dossiers],
+               "annotPub":annotPub,
+               "annotPriv":annotPriv,
+               "bureauCourant":bureauCourant}
+        
+        return self.requester.apiAuthRequest("/parapheur/api/reject", req)
+        
+    def remorse(self, dossiers, bureauCourant):
+        req = {"dossiers":[dossiers],
+               "bureauCourant":bureauCourant}
+        
+        return self.requester.apiAuthRequest("/parapheur/api/remorseDossier", req)
+        
+    def visa(self, dossiers, annotPub, annotPriv, bureauCourant):
+        req = {"dossiers":[dossiers],
+               "annotPub":annotPub,
+               "annotPriv":annotPriv,
+               "bureauCourant":bureauCourant}
+        
+        return self.requester.apiAuthRequest("/parapheur/api/visa", req)

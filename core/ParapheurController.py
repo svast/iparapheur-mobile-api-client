@@ -20,24 +20,21 @@ class ParapheurController(object):
 
         return self.requester.apiAuthRequest('/parapheur/api/getTypologie', req)["data"]["typology"]
 
-    def getDossier(self, dossierRef):
-        assert dossierRef
+    def getDossiersHeaders(self, bureauCourant):
+        assert bureauCourant
 
-        req = {"dossierRef": dossierRef}
+        req = {"bureauCourant": bureauCourant, "page" : "0", "pageSize" : "10", "parent" : "en-preparation"}
 
-        return self.requester.apiAuthRequest('/parapheur/api/getDossier', req)
-
-    # gets the circuit instance for dossier
-    def getCircuit(self, dossierRef):
-        assert dossierRef
-
-        req = {"dossierRef": dossierRef}
-
-        return self.requester.apiAuthRequest('/parapheur/api/getCircuit', req)
+        return self.requester.apiAuthRequest('/parapheur/api/getDossiersHeaders', req)
 
     #gets the circuit template for emetteur with type/subType
-    def getCircuit(self, emetteurRef, _type, sousType):
-        req = {"emetteurRef": emetteurRef, "type": _type, "sousType": sousType}
+    def getCircuit(self, bureauCourant, _type, sousType):
+        req = {"bureauCourant": bureauCourant, "type": _type, "sousType": sousType}
 
         return self.requester.apiAuthRequest('/parapheur/api/getCircuit', req)
+        
+    def getMetadonnees(self, _type, sousType):
+        req = {"type":_type, "sousType":sousType}
+        
+        return self.requester.apiAuthRequest("/parapheur/api/getMetadonnees", req)
 
