@@ -52,9 +52,10 @@ class DossierController(object):
 
         return self.requester.apiAuthRequest("/parapheur/api/addDocument", req) ["success"]
 
-    def removeDocument(self, document, bureau):
-        req = {"document":document,
-               "bureauCourant": bureau}
+    def removeDocument(self, document, dossier, bureauCourant):
+        req = {"document": document,
+               "dossier": dossier,
+               "bureauCourant": bureauCourant}
                
         return self.requester.apiAuthRequest("/parapheur/api/removeDocument", req)
 
@@ -116,3 +117,9 @@ class DossierController(object):
                "bureauCourant":bureauCourant}
         
         return self.requester.apiAuthRequest("/parapheur/api/visa", req)
+        
+    def archive(self, dossiers, bureauCourant):
+        req = {"dossiers":[dossiers],
+               "bureauCourant":bureauCourant}
+        
+        return self.requester.apiAuthRequest("/parapheur/api/archive", req)

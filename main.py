@@ -2,7 +2,7 @@ from core.AnnotationController import AnnotationController, Annotation, Point, R
 from core.DossierController import DossierController
 from core.ParapheurController import ParapheurController
 from core.Requester import Requester
-
+import time
 
 # Scenario "Documentation"
 requester = Requester("http://parapheur-dev.local:8080/alfresco/s")
@@ -19,7 +19,7 @@ parapheurController = ParapheurController(requester)
 bureaux = parapheurController.getBureaux("eperalta")
 
 bureauCourant = bureaux['bureaux'][0]['nodeRef']
-bureauDGS = bureaux['bureaux'][4]['nodeRef']
+bureauDGS = bureaux['bureaux'][1]['nodeRef']
 
 typologie = parapheurController.getTypologie(bureauCourant)
 
@@ -30,7 +30,7 @@ dossierController.setCircuit(dossier, bureauCourant, typologie.keys()[1], typolo
 docDelete = dossierController.addDocument(dossier, "fixtures/minimal.pdf", bureauCourant)
 docPrincipal = dossierController.addDocumentVisu(dossier, "fixtures/min.xml", "fixtures/minimal.pdf", bureauCourant)
 
-dossierController.removeDocument(docDelete, bureauCourant)
+dossierController.removeDocument(docDelete, dossier, bureauCourant)
 
 properties = {
     "cm:name": "Test EPA Mobile API"
@@ -59,19 +59,31 @@ data = dossierController.getDossier(dossier, bureauCourant)
 
 parapheurController.getDossiersHeaders(bureauCourant)
 
+parapheurController.getArchives()
+
 dossierController.getImages(dossier)
 
 parapheurController.getMetadonnees(typologie.keys()[2], typologie[typologie.keys()[2]][0])
 
 dossierController.visa(dossier, "Annotation publique", "Annotation publique", bureauCourant)
 
+time.sleep(1)
+
 dossierController.remorse(dossier, bureauCourant)
+
+time.sleep(1)
 
 dossierController.visa(dossier, "Annotation publique", "Annotation publique", bureauCourant)
 
+time.sleep(1)
+
 dossierController.reject(dossier, "Annotation publique", "Annotation publique", bureauDGS)
 
+time.sleep(2)
+
 dossierController.raz(dossier, bureauCourant)
+
+time.sleep(1)
 
 dossierController.deleteNodes(dossier)
 

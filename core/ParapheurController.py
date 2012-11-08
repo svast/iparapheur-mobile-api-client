@@ -37,4 +37,9 @@ class ParapheurController(object):
         req = {"type":_type, "sousType":sousType}
         
         return self.requester.apiAuthRequest("/parapheur/api/getMetadonnees", req)
+        
+    def getArchives(self):
+        req = {"page" : "0", "pageSize" : "10"}
+        
+        return self.requester.apiAuthRequest("/parapheur/api/getArchives", req)
 
