@@ -123,3 +123,17 @@ class DossierController(object):
                "bureauCourant":bureauCourant}
         
         return self.requester.apiAuthRequest("/parapheur/api/archive", req)
+        
+    def getSignInfo(self, dossiers):
+        req = {"dossiers":[dossiers]}
+        
+        return self.requester.apiAuthRequest("/parapheur/api/getSignInfo", req)
+        
+    def signature(self, dossiers, signatures, annotPub, annotPriv, bureauCourant):
+        req = {"dossiers":[dossiers],
+               "signatures":[signatures],
+               "annotPub":annotPub,
+               "annotPriv":annotPriv,
+               "bureauCourant":bureauCourant} 
+               
+        return self.requester.apiAuthRequest("/parapheur/api/signature", req)

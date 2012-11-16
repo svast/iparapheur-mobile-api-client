@@ -25,22 +25,33 @@ typologie = parapheurController.getTypologie(bureauCourant)
 
 dossier = dossierController.beginCreateDossier(bureauCourant)
 
+time.sleep(1)
+
 dossierController.setCircuit(dossier, bureauCourant, typologie.keys()[1], typologie[typologie.keys()[1]][0])
+
+time.sleep(1)
 
 docDelete = dossierController.addDocument(dossier, "fixtures/minimal.pdf", bureauCourant)
 docPrincipal = dossierController.addDocumentVisu(dossier, "fixtures/min.xml", "fixtures/minimal.pdf", bureauCourant)
 
+time.sleep(1)
+
 dossierController.removeDocument(docDelete, dossier, bureauCourant)
 
+time.sleep(1)
+
 properties = {
-    "cm:name": "Test EPA Mobile API"
+    "cm:name": "Test EPA Mobile API 2"
 }
 
 parapheurController.getCircuit(bureauCourant, typologie.keys()[1], typologie[typologie.keys()[1]][0])
 
+time.sleep(2)
+
 dossierController.setDossierProperties(dossier, bureauCourant, properties)
 dossierController.finalizeCreateDossier(dossier, bureauCourant)
 
+time.sleep(2)
 
 annotation = Annotation()
 
@@ -67,23 +78,33 @@ parapheurController.getMetadonnees(typologie.keys()[2], typologie[typologie.keys
 
 dossierController.visa(dossier, "Annotation publique", "Annotation publique", bureauCourant)
 
-time.sleep(1)
+time.sleep(2)
 
 dossierController.remorse(dossier, bureauCourant)
 
-time.sleep(1)
+time.sleep(2)
 
 dossierController.visa(dossier, "Annotation publique", "Annotation publique", bureauCourant)
 
-time.sleep(1)
+time.sleep(2)
 
-dossierController.reject(dossier, "Annotation publique", "Annotation publique", bureauDGS)
+dossierController.getSignInfo(dossier)
+
+dossierController.visa(dossier, "Annotation publique", "Annotation publique", bureauDGS)
+
+time.sleep(2)
+
+dossierController.signature(dossier, "123456789123456789123456789", "Annotation publique", "Annotation publique", bureauCourant)
+
+time.sleep(5)
+
+dossierController.reject(dossier, "Annotation publique", "Annotation publique", bureauCourant)
 
 time.sleep(2)
 
 dossierController.raz(dossier, bureauCourant)
 
-time.sleep(1)
+time.sleep(2)
 
 dossierController.deleteNodes(dossier)
 
